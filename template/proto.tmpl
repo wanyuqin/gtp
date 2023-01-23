@@ -1,0 +1,139 @@
+syntax = "proto3";
+
+package {{ .BasicSet.PackageName}};
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+
+option go_package = "{{ .BasicSet.GoPackageName}}";
+
+
+        {{range $key,$value :=.Message}}
+service {{ $value.Name}}Service {
+    rpc Create{{$value.Name}} (Create{{$value.Name}}Request) returns (Create{{$value.Name}}Response) {
+        option (google.api.http) = {
+            post: "/{{$.BasicSet.ApiVersion}}/{{$value.PathName }}"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            summary: "create {{ $value.Name}}"
+            description: "create {{ $value.Name}}"
+            tags: "{{ $value.Name }}"
+        };
+    };
+
+    rpc Get{{$value.Name}} (Get{{$value.Name}}Request) returns (Get{{ $value.Name}}Response) {
+        option (google.api.http) = {
+            get: "/{{$.BasicSet.ApiVersion}}/{{$value.PathName}}/{id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            summary: "get {{ $value.Name}}",
+            description: "get {{ $value.Name}}",
+            tags: "{{$value.Name}}",
+        };
+    };
+
+    rpc Update{{$value.Name}} (Update{{$value.Name}}Request) returns (Update{{ $value.Name}}Response) {
+        option (google.api.http) = {
+            put: "/{{$.BasicSet.ApiVersion}}/{{$value.PathName}}/{id}",
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            summary: "update {{ $value.Name}}",
+            description: "update {{ $value.Name}}",
+            tags: "{{$value.Name}}",
+        };
+    };
+
+    rpc Delete{{$value.Name}} (Delete{{$value.Name}}Request) returns (Delete{{ $value.Name}}Response) {
+        option (google.api.http) = {
+            delete: "/{{$.BasicSet.ApiVersion}}/{{$value.PathName}}/{id}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            summary: "delete {{ $value.Name}}",
+            description: "delete {{ $value.Name}}",
+            tags: "{{$value.Name}}",
+        };
+    };
+
+    rpc List{{$value.Name}} (List{{$value.Name}}Request) returns (List{{ $value.Name}}Response) {
+        option (google.api.http) = {
+            get: "/{{$.BasicSet.ApiVersion}}/{{$value.PathName}}",
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            summary: "list {{ $value.Name}}",
+            description: "list {{ $value.Name}}",
+            tags: "{{$value.Name}}",
+        };
+    };
+
+}
+
+
+message {{$value.Name}}{
+    {{range $index,$field:=$value.CreateRequest }}{{$field.Class.Kind}} {{$field.Class.Element}}{{if eq $field.Class.Kind  "map"}}<{{$field.Class.Key}},{{$field.Class.Value}}>{{end}} {{$field.Name}} = {{add $index 1}}[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "{{$field.Comment}}"},json_name="{{$field.JsonName}}"];
+    {{end}}
+}
+
+
+message Create{{$value.Name}}Request {
+    {{range $index,$field:=$value.CreateRequest }}{{$field.Class.Kind}} {{$field.Class.Element}}{{if eq $field.Class.Kind  "map"}}<{{$field.Class.Key}},{{$field.Class.Value}}>{{end}} {{$field.Name}} = {{add $index 1}}[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "{{$field.Comment}}"},json_name="{{$field.JsonName}}"];
+    {{end}}
+}
+
+message Create{{$value.Name}}Response {
+    string code =1;
+    string message =2;
+    {{$value.Name}} data = 3;
+}
+
+message Get{{$value.Name}}Request {
+
+}
+message Get{{$value.Name}}Response {
+    string code =1;
+    string message =2;
+
+}
+
+message Update{{$value.Name}}Request {
+    {{range $index,$field:=$value.CreateRequest }}{{$field.Class.Kind}} {{$field.Class.Element}}{{if eq $field.Class.Kind  "map"}}<{{$field.Class.Key}},{{$field.Class.Value}}>{{end}} {{$field.Name}} = {{add $index 1}}[(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "{{$field.Comment}}"},json_name="{{$field.JsonName}}"];
+    {{end}}
+
+}
+
+message Update{{$value.Name}}Response {
+    string code =1;
+    string message =2;
+    {{$value.Name}} data=3;
+
+}
+
+message Delete{{$value.Name}}Request {
+
+}
+
+message Delete{{$value.Name}}Response {
+    string code =1;
+    string message =2;
+    string data=3;
+
+}
+
+message List{{$value.Name}}Request {
+    PageInfo page_info = 1;
+}
+
+message List{{$value.Name}}Response {
+    string code =1;
+    string message =2;
+
+}
+        {{end}}
+
+message PageInfo {
+    int32 page = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "页码", default: "1"}];
+    int32 page_size = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {description: "页面大小", default: "10"}];
+}

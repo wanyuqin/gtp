@@ -1,0 +1,4 @@
+packageName: "example"
+goPackageName: "/gen/pb"
+apiVersion: "v2"
+outputPath: "./proto/example"

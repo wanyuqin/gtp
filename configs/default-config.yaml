@@ -1,0 +1,4 @@
+packageName: "default"
+goPackageName: "/pb"
+apiVersion: "v1"
+outputPath: "./proto"

@@ -10,10 +10,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"gihub.com/wanyuqin/go-to-proto/internal/config"
-	"gihub.com/wanyuqin/go-to-proto/internal/object"
-	"gihub.com/wanyuqin/go-to-proto/internal/parse"
-	"gihub.com/wanyuqin/go-to-proto/utils"
+	"gihub.com/wanyuqin/gtp/internal/config"
+	"gihub.com/wanyuqin/gtp/internal/object"
+	"gihub.com/wanyuqin/gtp/internal/parse"
+	"gihub.com/wanyuqin/gtp/utils"
 )
 
 type GenerateOptions struct {

@@ -10,8 +10,8 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	"gihub.com/wanyuqin/go-to-proto/internal/config"
-	"gihub.com/wanyuqin/go-to-proto/internal/object"
+	"gihub.com/wanyuqin/gtp/internal/config"
+	"gihub.com/wanyuqin/gtp/internal/object"
 )
 
 func Add(x, y int) int {

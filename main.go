@@ -1,6 +1,6 @@
 package main
 
-import "gihub.com/wanyuqin/go-to-proto/cmd"
+import "gihub.com/wanyuqin/gtp/cmd"
 
 func main() {
 	cmd.Execute()

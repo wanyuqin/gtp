@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/viper"
 
-	"gihub.com/wanyuqin/go-to-proto/internal/object"
+	"gihub.com/wanyuqin/gtp/internal/object"
 )
 
 type Proto struct {

@@ -5,6 +5,13 @@
 go-to-proto is a tool to convert the structure in the go file into the grpc-gateway format proto
 
 
+## setup
+```shell
+git clone  https://github.com/wanyuqin/gtp.git
+cd gtp
+go install
+```
+
 ## command line 
 ```shell
 ptg is a tool for generating proto file through go

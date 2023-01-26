@@ -1,11 +1,13 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path"
 
 	"github.com/spf13/viper"
+	"golang.org/x/sys/unix"
 
 	"gihub.com/wanyuqin/gtp/internal/object"
 )
@@ -54,6 +56,17 @@ func InitConfig(configPath string) (BasicSet, error) {
 
 	if err != nil {
 		return b, err
+	}
+
+	od, err := os.Stat(b.OutputPath)
+	if errors.Is(err, unix.ENOENT) {
+		err = os.MkdirAll(b.OutputPath, 0777)
+		if err != nil {
+			return b, err
+		}
+	}
+	if od != nil && !od.IsDir() {
+		return b, errors.New(fmt.Sprintf("%s is not a directory", b.OutputPath))
 	}
 
 	return b, nil

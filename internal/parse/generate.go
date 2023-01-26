@@ -1,14 +1,11 @@
 package parse
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 	"text/template"
-
-	"golang.org/x/sys/unix"
 
 	"gihub.com/wanyuqin/gtp/internal/config"
 	"gihub.com/wanyuqin/gtp/internal/object"
@@ -40,38 +37,18 @@ func Generate(basicSet config.BasicSet, objList object.ObjectList) {
 		Message:  messages,
 	}
 	fn := fmt.Sprintf("%s.%s", basicSet.FileName, protoSuffix)
-	di, err := os.Stat(basicSet.OutputPath)
-	if err != nil && !errors.Is(err, unix.ENOENT) {
+	fn = filepath.Join(basicSet.OutputPath, fn)
+	fi, err := os.Create(fn)
+	defer fi.Close()
+	_, err = os.Stat(fn)
+	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
 	}
-	if di != nil && !di.IsDir() {
-		err = errors.New("output path must be a directory")
+	err = files.Execute(fi, p)
+	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
-	}
-
-	if errors.Is(err, os.ErrNotExist) {
-		err = os.MkdirAll(basicSet.OutputPath, 0777)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			return
-
-		}
-
-		fn = filepath.Join(basicSet.OutputPath, fn)
-
-		fi, err := os.Create(fn)
-		_, err = os.Stat(fn)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			return
-		}
-		err = files.Execute(fi, p)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			return
-		}
 
 	}
 }
